@@ -1,3 +1,7 @@
+regressao-logistica/index.html
+
+por este código:
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -133,24 +137,36 @@
         const repositorio = "regressao";
         const pasta = "regressao-logistica";
 
-        const api =
+        const apiUrl =
             `https://api.github.com/repos/${usuario}/${repositorio}/contents/${pasta}`;
 
         const lista = document.getElementById("lista-arquivos");
 
         function formatarNome(nome) {
-            return nome
+            nome = nome
                 .replace(/\.csv$/i, "")
-                .replace(/[-_]/g, " ")
-                .replace(/\b\w/g, letra => letra.toUpperCase());
+                .replace(/[-_]/g, " ");
+
+            return nome
+                .split(" ")
+                .map(palavra => {
+                    if (palavra.length === 0) {
+                        return "";
+                    }
+
+                    return palavra.charAt(0).toUpperCase() + palavra.slice(1);
+                })
+                .join(" ");
         }
 
         async function carregarArquivos() {
             try {
-                const resposta = await fetch(api);
+                const resposta = await fetch(apiUrl);
 
                 if (!resposta.ok) {
-                    throw new Error("Não foi possível acessar os arquivos.");
+                    throw new Error(
+                        "Não foi possível consultar o repositório."
+                    );
                 }
 
                 const arquivos = await resposta.json();
@@ -168,42 +184,50 @@
 
                 if (arquivosCsv.length === 0) {
                     lista.innerHTML =
-                        '<p class="mensagem">Nenhum arquivo CSV disponível.</p>';
+                        '<p class="mensagem">Nenhum arquivo CSV disponível no momento.</p>';
 
                     return;
                 }
 
                 arquivosCsv.forEach(arquivo => {
-                    const card = document.createElement("div");
+                    const item = document.createElement("article");
+                    item.className = "arquivo";
 
-                    card.className = "arquivo";
+                    const informacoes = document.createElement("div");
 
-                    card.innerHTML = `
-                        <div>
-                            <h2>${formatarNome(arquivo.name)}</h2>
-                            <div class="tipo">${arquivo.name}</div>
-                        </div>
+                    const titulo = document.createElement("h2");
+                    titulo.textContent = formatarNome(arquivo.name);
 
-                        <a
-                            class="botao"
-                            href="${arquivo.download_url}"
-                            download
-                        >
-                            Baixar CSV
-                        </a>
-                    `;
+                    const tipo = document.createElement("p");
+                    tipo.className = "tipo";
+                    tipo.textContent = arquivo.name;
 
-                    lista.appendChild(card);
+                    informacoes.appendChild(titulo);
+                    informacoes.appendChild(tipo);
+
+                    const botao = document.createElement("a");
+                    botao.className = "botao";
+
+                    botao.href =
+                        `https://${usuario}.github.io/${repositorio}/${pasta}/${encodeURIComponent(arquivo.name)}`;
+
+                    botao.textContent = "Baixar CSV";
+                    botao.setAttribute("download", arquivo.name);
+
+                    item.appendChild(informacoes);
+                    item.appendChild(botao);
+
+                    lista.appendChild(item);
                 });
 
             } catch (erro) {
-                console.error(erro);
-
                 lista.innerHTML = `
                     <p class="mensagem erro">
-                        Erro ao carregar os arquivos. Tente novamente mais tarde.
+                        Não foi possível carregar os arquivos. Tente novamente mais tarde.
                     </p>
                 `;
+
+                console.error(erro);
             }
         }
 

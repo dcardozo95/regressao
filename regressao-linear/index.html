@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regressão Linear</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #243447;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: #5f6b76;
+            margin-bottom: 35px;
+        }
+
+        .arquivo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .arquivo h2 {
+            margin: 0 0 6px;
+            font-size: 20px;
+        }
+
+        .arquivo p {
+            margin: 0;
+            color: #5f6b76;
+        }
+
+        .botao {
+            background: #1f6feb;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .botao:hover {
+            background: #1857b6;
+        }
+
+        .voltar {
+            display: inline-block;
+            margin-top: 25px;
+            color: #1f6feb;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .arquivo {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .botao {
+                width: 100%;
+                box-sizing: border-box;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <h1>Regressão Linear</h1>
+
+        <p class="subtitulo">
+            Selecione uma base de dados para baixar.
+        </p>
+
+        <section class="arquivo">
+            <div>
+                <h2>Base de dados — Alunos</h2>
+                <p>Horas de estudo, faltas, sono e nota final.</p>
+            </div>
+
+            <a class="botao" href="alunos.csv" download>
+                Baixar CSV
+            </a>
+        </section>
+
+        <a class="voltar" href="../">← Voltar para a página inicial</a>
+    </main>
+</body>
+</html>

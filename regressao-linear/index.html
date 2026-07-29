@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Regressão Linear</title>
 
     <style>
@@ -14,7 +15,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 850px;
             margin: auto;
             padding: 40px 20px;
         }
@@ -36,20 +37,22 @@
             align-items: center;
             gap: 20px;
             background: white;
-            padding: 20px;
-            margin-bottom: 15px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
             border-radius: 12px;
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
         }
 
         .arquivo h2 {
-            margin: 0 0 6px;
-            font-size: 20px;
+            margin: 0;
+            font-size: 18px;
+            word-break: break-word;
         }
 
-        .arquivo p {
-            margin: 0;
+        .tipo {
+            margin-top: 6px;
             color: #5f6b76;
+            font-size: 14px;
         }
 
         .botao {
@@ -63,6 +66,18 @@
 
         .botao:hover {
             background: #1857b6;
+        }
+
+        .mensagem {
+            text-align: center;
+            padding: 25px;
+            color: #5f6b76;
+        }
+
+        .erro {
+            background: #fff1f1;
+            color: #a12626;
+            border-radius: 10px;
         }
 
         .voltar {
@@ -95,18 +110,97 @@
             Selecione uma base de dados para baixar.
         </p>
 
-        <section class="arquivo">
-            <div>
-                <h2>Base de dados — Alunos</h2>
-                <p>Horas de estudo, faltas, sono e nota final.</p>
-            </div>
-
-            <a class="botao" href="alunos.csv" download>
-                Baixar CSV
-            </a>
+        <section id="lista-arquivos">
+            <p class="mensagem">Carregando arquivos...</p>
         </section>
 
         <a class="voltar" href="../">← Voltar para a página inicial</a>
     </main>
+
+    <script>
+        const usuario = "dcardozo95";
+        const repositorio = "regressao";
+        const pasta = "regressao-linear";
+
+        const apiUrl =
+            `https://api.github.com/repos/${usuario}/${repositorio}/contents/${pasta}`;
+
+        const lista = document.getElementById("lista-arquivos");
+
+        function formatarNome(nomeArquivo) {
+            return nomeArquivo
+                .replace(/\.csv$/i, "")
+                .replace(/[-_]/g, " ")
+                .replace(/\b\w/g, letra => letra.toUpperCase());
+        }
+
+        async function carregarArquivos() {
+            try {
+                const resposta = await fetch(apiUrl);
+
+                if (!resposta.ok) {
+                    throw new Error("Não foi possível consultar o repositório.");
+                }
+
+                const arquivos = await resposta.json();
+
+                const arquivosCsv = arquivos
+                    .filter(arquivo =>
+                        arquivo.type === "file" &&
+                        arquivo.name.toLowerCase().endsWith(".csv")
+                    )
+                    .sort((a, b) =>
+                        a.name.localeCompare(b.name, "pt-BR")
+                    );
+
+                lista.innerHTML = "";
+
+                if (arquivosCsv.length === 0) {
+                    lista.innerHTML =
+                        '<p class="mensagem">Nenhum arquivo CSV disponível no momento.</p>';
+                    return;
+                }
+
+                arquivosCsv.forEach(arquivo => {
+                    const item = document.createElement("article");
+                    item.className = "arquivo";
+
+                    const informacoes = document.createElement("div");
+
+                    const titulo = document.createElement("h2");
+                    titulo.textContent = formatarNome(arquivo.name);
+
+                    const tipo = document.createElement("p");
+                    tipo.className = "tipo";
+                    tipo.textContent = arquivo.name;
+
+                    informacoes.appendChild(titulo);
+                    informacoes.appendChild(tipo);
+
+                    const botao = document.createElement("a");
+                    botao.className = "botao";
+                    botao.href = arquivo.download_url;
+                    botao.textContent = "Baixar CSV";
+                    botao.setAttribute("download", arquivo.name);
+
+                    item.appendChild(informacoes);
+                    item.appendChild(botao);
+
+                    lista.appendChild(item);
+                });
+
+            } catch (erro) {
+                lista.innerHTML = `
+                    <p class="mensagem erro">
+                        Não foi possível carregar os arquivos. Tente novamente mais tarde.
+                    </p>
+                `;
+
+                console.error(erro);
+            }
+        }
+
+        carregarArquivos();
+    </script>
 </body>
 </html>

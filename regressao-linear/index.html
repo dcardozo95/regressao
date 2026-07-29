@@ -127,13 +127,17 @@
 
         const lista = document.getElementById("lista-arquivos");
 
-        function formatarNome(nomeArquivo) {
-            return nomeArquivo
-                .replace(/\.csv$/i, "")
-                .replace(/[-_]/g, " ")
-                .replace(/\b\w/g, letra => letra.toUpperCase());
-        }
+function formatarNome(nome) {
 
+    nome = nome.replace(/\.csv$/i, "");
+    nome = nome.replace(/[-_]/g, " ");
+
+    return nome.split(" ").map(palavra => {
+        if (palavra.length === 0) return "";
+        return palavra.charAt(0).toUpperCase() + palavra.slice(1);
+    }).join(" ");
+
+}
         async function carregarArquivos() {
             try {
                 const resposta = await fetch(apiUrl);

@@ -182,10 +182,10 @@ function formatarNome(nome) {
                     informacoes.appendChild(tipo);
 
                     const botao = document.createElement("a");
-                    botao.className = "botao";
-                    botao.href = arquivo.download_url;
-                    botao.textContent = "Baixar CSV";
-                    botao.setAttribute("download", arquivo.name);
+botao.className = "botao";
+botao.href = `https://dcardozo95.github.io/regressao/${pasta}/${encodeURIComponent(arquivo.name)}`;
+botao.textContent = "Baixar CSV";
+botao.setAttribute("download", arquivo.name);
 
                     item.appendChild(informacoes);
                     item.appendChild(botao);

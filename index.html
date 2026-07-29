@@ -1,20 +1,170 @@
-  <p class="subtitulo">
-            Selecione o tipo de regressão para acessar as bases de dados.
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Materiais de Regressão</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f6fa;
+      color: #1f2937;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 950px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    .cabecalho {
+      text-align: center;
+      margin-bottom: 42px;
+    }
+
+    .cabecalho h1 {
+      margin: 0 0 12px;
+      font-size: 36px;
+      color: #172033;
+    }
+
+    .cabecalho p {
+      margin: 0;
+      font-size: 17px;
+      color: #64748b;
+    }
+
+    .opcoes {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      min-height: 260px;
+      padding: 32px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.14);
+    }
+
+    .icone {
+      font-size: 48px;
+      margin-bottom: 22px;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 25px;
+      color: #172033;
+    }
+
+    .card p {
+      margin: 0 0 28px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .botao {
+      display: inline-block;
+      margin-top: auto;
+      width: fit-content;
+      padding: 12px 20px;
+      background: #2563eb;
+      color: #ffffff;
+      border-radius: 9px;
+      font-weight: bold;
+    }
+
+    .rodape {
+      margin-top: 45px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        padding: 35px 16px;
+      }
+
+      .cabecalho h1 {
+        font-size: 29px;
+      }
+
+      .opcoes {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: 230px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+
+    <header class="cabecalho">
+      <h1>Materiais de Regressão</h1>
+      <p>Selecione o tipo de regressão para acessar as bases de dados.</p>
+    </header>
+
+    <section class="opcoes">
+
+      <a class="card" href="regressao-linear/">
+        <div class="icone">📈</div>
+
+        <h2>Regressão Linear</h2>
+
+        <p>
+          Acesse as bases de dados e atividades relacionadas à previsão
+          de valores numéricos.
         </p>
 
-        <section class="opcoes">
-            <a class="card" href="regressao-linear/">
-                <div class="icone">📈</div>
-                <h2>Regressão Linear</h2>
-                <p>Acesse as bases e atividades de regressão linear.</p>
-            </a>
+        <span class="botao">Acessar materiais</span>
+      </a>
 
-            <a class="card" href="regressao-logistica/">
-                <div class="icone">📊</div>
-                <h2>Regressão Logística</h2>
-                <p>Acesse as bases e atividades de regressão logística.</p>
-            </a>
-        </section>
-    </main>
+      <a class="card" href="regressao-logistica/">
+        <div class="icone">📊</div>
+
+        <h2>Regressão Logística</h2>
+
+        <p>
+          Acesse as bases de dados e atividades relacionadas à
+          classificação de resultados.
+        </p>
+
+        <span class="botao">Acessar materiais</span>
+      </a>
+
+    </section>
+
+    <footer class="rodape">
+      Materiais para as atividades de Ciência de Dados
+    </footer>
+
+  </main>
 </body>
 </html>

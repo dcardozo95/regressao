@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Regressão Logística</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f6fa;
+            color: #243447;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 45px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #172033;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 40px;
+        }
+
+        .arquivo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            background: white;
+            padding: 22px;
+            margin-bottom: 18px;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .arquivo h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .tipo {
+            margin-top: 8px;
+            color: #64748b;
+        }
+
+        .botao {
+            background: #16a34a;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .botao:hover {
+            background: #15803d;
+        }
+
+        .mensagem {
+            text-align: center;
+            color: #64748b;
+            padding: 25px;
+        }
+
+        .erro {
+            color: #b91c1c;
+        }
+
+        .voltar {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .voltar:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 700px) {
+            .arquivo {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .botao {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>📊 Regressão Logística</h1>
+
+        <p class="subtitulo">
+            Selecione uma base de dados para baixar.
+        </p>
+
+        <div id="lista-arquivos">
+            <p class="mensagem">Carregando arquivos...</p>
+        </div>
+
+        <a class="voltar" href="../">
+            ← Voltar para a página inicial
+        </a>
+
+    </div>
+
+    <script>
+        const usuario = "dcardozo95";
+        const repositorio = "regressao";
+        const pasta = "regressao-logistica";
+
+        const api =
+            `https://api.github.com/repos/${usuario}/${repositorio}/contents/${pasta}`;
+
+        const lista = document.getElementById("lista-arquivos");
+
+        function formatarNome(nome) {
+            return nome
+                .replace(/\.csv$/i, "")
+                .replace(/[-_]/g, " ")
+                .replace(/\b\w/g, letra => letra.toUpperCase());
+        }
+
+        async function carregarArquivos() {
+            try {
+                const resposta = await fetch(api);
+
+                if (!resposta.ok) {
+                    throw new Error("Não foi possível acessar os arquivos.");
+                }
+
+                const arquivos = await resposta.json();
+
+                const arquivosCsv = arquivos
+                    .filter(arquivo =>
+                        arquivo.type === "file" &&
+                        arquivo.name.toLowerCase().endsWith(".csv")
+                    )
+                    .sort((a, b) =>
+                        a.name.localeCompare(b.name, "pt-BR")
+                    );
+
+                lista.innerHTML = "";
+
+                if (arquivosCsv.length === 0) {
+                    lista.innerHTML =
+                        '<p class="mensagem">Nenhum arquivo CSV disponível.</p>';
+
+                    return;
+                }
+
+                arquivosCsv.forEach(arquivo => {
+                    const card = document.createElement("div");
+
+                    card.className = "arquivo";
+
+                    card.innerHTML = `
+                        <div>
+                            <h2>${formatarNome(arquivo.name)}</h2>
+                            <div class="tipo">${arquivo.name}</div>
+                        </div>
+
+                        <a
+                            class="botao"
+                            href="${arquivo.download_url}"
+                            download
+                        >
+                            Baixar CSV
+                        </a>
+                    `;
+
+                    lista.appendChild(card);
+                });
+
+            } catch (erro) {
+                console.error(erro);
+
+                lista.innerHTML = `
+                    <p class="mensagem erro">
+                        Erro ao carregar os arquivos. Tente novamente mais tarde.
+                    </p>
+                `;
+            }
+        }
+
+        carregarArquivos();
+    </script>
+
+</body>
+</html>
